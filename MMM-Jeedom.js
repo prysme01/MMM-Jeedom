@@ -47,9 +47,7 @@ Module.register("MMM-Jeedom",{
 	getStyles: function() {
 	    return ['font-awesome.css'];
 	},
-	getScripts: function() {
-        	return ["moment.js"];
-	},
+	
 	// Override dom generator.
 	getDom: function() {
 
