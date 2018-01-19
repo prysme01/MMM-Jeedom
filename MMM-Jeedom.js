@@ -69,7 +69,7 @@ Module.register("MMM-Jeedom",{
 			sensorWrapper.className = "normal";
 
 			var symbolTD = document.createElement('td');
-			symbolTD.className = "symbol";
+			symbolTD.className = "symbol align-left";
 			var symbol = document.createElement('i');
 			var symbolClass = sensor.symboloff;
 			if(sensor.boolean && sensor.status==1) symbolClass = sensor.symbolon;
@@ -79,14 +79,14 @@ Module.register("MMM-Jeedom",{
 			sensorWrapper.appendChild(symbolTD);
 
 			var titleTD = document.createElement('td');
-			titleTD.className = "title bright align-right";
+			titleTD.className = "title bright align-left";
 			titleTD.innerHTML = sensor.sname;
 			if(typeof sensor.customTitle !== 'undefined') titleTD.innerHTML = sensor.customTitle;
 			sensorWrapper.appendChild(titleTD);
 
 			if (!sensor.boolean) {
 				var statusTD = document.createElement('td');
-				statusTD.className = "time light";
+				statusTD.className = "time light align-right";
 				statusTD.innerHTML = sensor.status;
 				if(typeof sensor.unit !== 'undefined') { statusTD.innerHTML = statusTD.innerHTML + " "+sensor.unit;}
 				sensorWrapper.appendChild(statusTD);
