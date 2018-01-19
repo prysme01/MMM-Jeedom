@@ -79,7 +79,7 @@ Module.register("MMM-Jeedom",{
 			sensorWrapper.appendChild(symbolTD);
 
 			var titleTD = document.createElement('td');
-			titleTD.className = "title bright";
+			titleTD.className = "title bright align-right";
 			titleTD.innerHTML = sensor.sname;
 			if(typeof sensor.customTitle !== 'undefined') titleTD.innerHTML = sensor.customTitle;
 			sensorWrapper.appendChild(titleTD);
