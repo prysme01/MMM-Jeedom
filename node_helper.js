@@ -1,5 +1,6 @@
 var NodeHelper = require("node_helper");
 const https = require('https');
+const http = require('http');
 
 module.exports = NodeHelper.create({
 	start: function() {
@@ -31,8 +32,10 @@ module.exports = NodeHelper.create({
 		    'Content-Length': Buffer.byteLength(postData)
 		 }
 		};
-		
-		var req = https.request(options, (res) => {
+
+		var protocol = refConfig.jeedomHTTPS ? https : http;
+
+		var req = protocol.request(options, (res) => {
 		  res.setEncoding('utf8');
 		  res.on('data', (chunk) => {
 		    self.sendSocketNotification("RELOAD_DONE",JSON.parse(chunk));

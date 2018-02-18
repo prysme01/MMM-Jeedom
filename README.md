@@ -21,6 +21,7 @@ modules: [
 			      	jeedomAPIKey: "",
 				jeedomURL: "",
 				jeedomPORT: 443,
+				jeedomHTTPS: true,
 				jeedomAPIPath: "/core/api/jeeApi.php",
 				sensors: [
 				{
