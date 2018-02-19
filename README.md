@@ -54,7 +54,7 @@ modules: [
 		}
 ]
 ````
-* For the moment only HTTPS is supported
+* HTTPS and HTTP is supported
 * you can define all the sensors you want
 * you can add several time the module in your Magic Mirror config and define a different updateInterval
 * symbol is based on [Fontawesome](http://fontawesome.io/icons/)
