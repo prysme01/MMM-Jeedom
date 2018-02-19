@@ -20,6 +20,7 @@ Module.register("MMM-Jeedom",{
 				customTitle: "No sensor define in config",
 			},
 		],
+		jeedomHTTPS: true
 	},
 
 	start: function() {
