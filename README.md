@@ -19,7 +19,7 @@ modules: [
 			config: {
 				updateInterval: 3000,
 			      	jeedomAPIKey: "",
-				jeedomURL: "",
+				jeedomURL: "192.168.0.1 or hostname",
 				jeedomPORT: 443,
 				jeedomHTTPS: true,
 				jeedomAPIPath: "/core/api/jeeApi.php",
