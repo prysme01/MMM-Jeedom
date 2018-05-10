@@ -21,7 +21,7 @@ module.exports = NodeHelper.create({
 		}
 		var postData = '{"jsonrpc": "2.0", "id": "1000", "method": "cmd::execCmd", "params": {"apikey": "';
 		postData = postData + refConfig.jeedomAPIKey+'", "id": ' + ids + ']}}';
-
+		console.log(postData);
 		var options = {
 		  hostname: refConfig.jeedomURL,
 		  port: refConfig.jeedomPORT,

@@ -17,6 +17,7 @@ Module.register("MMM-Jeedom",{
 				symboloff: "fa fa-user-o",
 				hiddenon: false,
 				hiddenoff: false,
+				hideempty: false,
 				customTitle: "No sensor define in config",
 			},
 		],
@@ -35,9 +36,7 @@ Module.register("MMM-Jeedom",{
 		this.sensors = [];
 		for (var c in this.config.sensors) {
 			var sensor = this.config.sensors[c];
-			var newSensor = {idx:sensor.idx, symbol:sensor.symbol, symbolon:sensor.symbolon, symboloff:sensor.symboloff, 
-					hiddenon:sensor.hiddenon, hiddenoff:sensor.hiddenoff, 
-					customTitle:sensor.customTitle, status:"", sname:"",boolean:sensor.boolean,unit:sensor.unit};
+			var newSensor = {idx:sensor.idx, symbol:sensor.symbol, symbolon:sensor.symbolon, symboloff:sensor.symboloff, hideempty:sensor.hideempty,hiddenon:sensor.hiddenon, hiddenoff:sensor.hiddenoff, customTitle:sensor.customTitle, status:"", sname:"",boolean:sensor.boolean,unit:sensor.unit};
 			this.sensors.push(newSensor);
 		}
 		Log.log(this.sensors);
@@ -64,7 +63,7 @@ Module.register("MMM-Jeedom",{
 
 		for (var c in this.sensors) {
 			var sensor = this.sensors[c];
-
+			if((sensor.status==0  && sensor.hideempty)) continue;
 			if((sensor.status=="On" && sensor.hiddenon)||(sensor.status=="Off" && sensor.hiddenoff)) continue;
 			var sensorWrapper = document.createElement("tr");
 			sensorWrapper.className = "normal";
@@ -105,6 +104,7 @@ Module.register("MMM-Jeedom",{
 	socketNotificationReceived: function(notification, payload) {
 		if (notification === "RELOAD_DONE") {
 			this.result = payload;
+			//Log.log(payload);
 			for (var c in this.sensors) {
 				var sensor = this.sensors[c];
 				if(payload.result[sensor.idx] != null){
