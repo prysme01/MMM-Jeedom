@@ -47,6 +47,7 @@ modules: [
 					idx: "6031",
 					symbol: "fa fa-music",
 					customTitle: "Musique",
+					hideempty:false,
 
 				},
 			]
