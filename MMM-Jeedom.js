@@ -1,14 +1,21 @@
 'use strict';
 
+//Ajout AgP - 11/07/2018	
+//pour gerer le PIR et le module.hidden en meme temps
+var UserPresence = true; // par défaut on est présent (pas de sensor PIR pour couper)
+var ModuleHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
+//Fin ajout AgP
+
 Module.register("MMM-Jeedom",{
 	// Default module config.
 	defaults: {
 		puissance: "",
 		tsalon: "",
 		conso: "test",
-		updateInterval: 5000,
+		updateInterval: 5000, //5s
 		initialLoadDelay: 0,
 		animationSpeed: 1000,
+		IntervalID: 0, // ne sert à rien pourles utilisateurs, mais à déclarer pour chaque instance pour pouvoir couper la mise à jour pour chacune
 		result: {},
 		sensors: [
 			{
@@ -31,8 +38,9 @@ Module.register("MMM-Jeedom",{
 		moment.locale(config.language);
 		this.title = "Loading...";
 		this.loaded = false;
-		var self = this;
-		setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
+		var self = this; 
+		//Ajout AgP : IntervalID ci-dessous. Le définir permet de le couper après. Il faut this. car on en défini 1 par instance Jeedom.
+		this.IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
 		this.sensors = [];
 		for (var c in this.config.sensors) {
 			var sensor = this.config.sensors[c];
@@ -44,6 +52,49 @@ Module.register("MMM-Jeedom",{
 		// first update on start
 		self.updateJeedom();
 	},
+	
+	//Modif AgP42 - 11/07/2018	
+
+	suspend: function() { //fct core appelée quand le module est caché
+		ModuleHidden = true; //Il aurait été plus propre d'utiliser this.hidden, mais comportement aléatoire...
+		//Log.log("Fct suspend - ModuleHidden = " + ModuleHidden);
+		this.GestionUpdateInterval(); //on appele la fonction qui gere tous les cas
+	},
+	
+	resume: function() { //fct core appelée quand le module est affiché
+		ModuleHidden = false;
+		//Log.log("Fct resume - ModuleHidden = " + ModuleHidden);
+		this.GestionUpdateInterval();	
+	},
+
+	notificationReceived: function(notification, payload) {
+		if (notification === "USER_PRESENCE") { // notification envoyée par le module MMM-PIR-Sensor. Voir sa doc
+			//Log.log("Fct notificationReceived USER_PRESENCE - payload = " + payload);
+			UserPresence = payload;
+			this.GestionUpdateInterval();
+		}
+	},
+
+	GestionUpdateInterval: function() {
+		if (UserPresence === true && ModuleHidden === false){ // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché
+			var self = this;
+			//Log.log(this.name + " est revenu et user present ! On update");
+	
+			// update tout de suite
+			self.updateJeedom();
+			//et on remet l'intervalle d'update en route, si aucun deja actif (pour éviter les instances multiples)
+			if (this.IntervalID === 0){
+				this.IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
+			}
+		}else{ //sinon (UserPresence = false OU ModuleHidden = true)
+			//Log.log("Personne regarde : on stop l'update !");
+			clearInterval(this.IntervalID); // on arrete l'intervalle d'update en cours
+			this.IntervalID=0; //on reset la variable
+		}
+	},
+
+	//fin modif AgP
+
 	getStyles: function() {
 	    return ['font-awesome.css'];
 	},
@@ -100,7 +151,11 @@ Module.register("MMM-Jeedom",{
 	},
 	updateJeedom: function() {
 		this.sendSocketNotification('RELOAD',this.config);
+		//AgP		
+		//console.log("Hello, update module Jeedom demandé!! IntervalID : " + this.IntervalID);
+		//this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Jeedom demandée"});
 	},
+
 	socketNotificationReceived: function(notification, payload) {
 		if (notification === "RELOAD_DONE") {
 			this.result = payload;
