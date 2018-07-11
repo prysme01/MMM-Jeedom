@@ -1,10 +1,9 @@
 'use strict';
 
 //Ajout AgP - 11/07/2018	
-var IntervalID = 0; //Pour pouvoir couper et relancer l'update régulier
 //pour gerer le PIR et le module.hidden en meme temps
 var UserPresence = true; // par défaut on est présent (pas de sensor PIR pour couper)
-var ModuleHidden = false; // par défaut on affiche le module (pas de module carousel ou autre)
+var ModuleHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre)
 //Fin ajout AgP
 
 Module.register("MMM-Jeedom",{
@@ -16,6 +15,7 @@ Module.register("MMM-Jeedom",{
 		updateInterval: 5000, //5s
 		initialLoadDelay: 0,
 		animationSpeed: 1000,
+		IntervalID: 0, // ne sert à rien pourles utilisateurs, mais à déclarer pour chaque instance pour pouvoir couper la mise à jour pour chacune
 		result: {},
 		sensors: [
 			{
@@ -39,8 +39,8 @@ Module.register("MMM-Jeedom",{
 		this.title = "Loading...";
 		this.loaded = false;
 		var self = this; 
-		//Ajout AgP : IntervalID ci-dessous. Le définir permet de le couper après.
-		IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
+		//Ajout AgP : IntervalID ci-dessous. Le définir permet de le couper après. Il faut this. car on en défini 1 par instance Jeedom.
+		this.IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
 		this.sensors = [];
 		for (var c in this.config.sensors) {
 			var sensor = this.config.sensors[c];
@@ -83,13 +83,13 @@ Module.register("MMM-Jeedom",{
 			// update tout de suite
 			self.updateJeedom();
 			//et on remet l'intervalle d'update en route, si aucun deja actif (pour éviter les instances multiples)
-			if (IntervalID === 0){
-				IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
+			if (this.IntervalID === 0){
+				this.IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
 			}
 		}else{ //sinon (UserPresence = false OU ModuleHidden = true)
 			//Log.log("Personne regarde : on stop l'update !");
-			clearInterval(IntervalID); // on arrete l'intervalle d'update en cours
-			IntervalID=0; //on reset la variable
+			clearInterval(this.IntervalID); // on arrete l'intervalle d'update en cours
+			this.IntervalID=0; //on reset la variable
 		}
 	},
 
@@ -152,7 +152,8 @@ Module.register("MMM-Jeedom",{
 	updateJeedom: function() {
 		this.sendSocketNotification('RELOAD',this.config);
 		//AgP		
-		//console.log("Hello, update module Jeedom demandé!! IntervalID : " + IntervalID);
+		//console.log("Hello, update module Jeedom demandé!! IntervalID : " + this.IntervalID);
+		//this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Jeedom demandée"});
 	},
 
 	socketNotificationReceived: function(notification, payload) {

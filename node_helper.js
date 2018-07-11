@@ -2,8 +2,6 @@ var NodeHelper = require("node_helper");
 const https = require('https');
 const http = require('http');
 
-//var temps = new Date();
-
 module.exports = NodeHelper.create({
 	start: function() {
 		
@@ -25,9 +23,6 @@ module.exports = NodeHelper.create({
 		postData = postData + refConfig.jeedomAPIKey+'", "id": ' + ids + ']}}';
 		//modif AGP
 		//console.log(postData);
-		//temps.getTime();
-		//console.log("Hello, je reload !!");
-		//fin modifs AgP
 		var options = {
 		  hostname: refConfig.jeedomURL,
 		  port: refConfig.jeedoJeedommPORT,
