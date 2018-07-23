@@ -8,11 +8,12 @@ This module displays any JEEDOM command value. The information will be updated d
 ## Module installation
 
 Just git clone this repository to your Magic Mirror Modules directory
+and add the configuration section in your Magic Mirror config file
 
 ## Module configuration
 ````javascript
 modules: [
-{
+		{
 			module: 'MMM-Jeedom',
 			header: 'Jeedom Maison',
 			position: "top_left",
@@ -52,7 +53,7 @@ modules: [
 				},
 			]
 			}
-		}
+		},
 ]
 ````
 * HTTPS and HTTP is supported
