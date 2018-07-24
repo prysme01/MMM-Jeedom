@@ -21,10 +21,11 @@ module.exports = NodeHelper.create({
 		}
 		var postData = '{"jsonrpc": "2.0", "id": "1000", "method": "cmd::execCmd", "params": {"apikey": "';
 		postData = postData + refConfig.jeedomAPIKey+'", "id": ' + ids + ']}}';
-		console.log(postData);
+		//modif AGP
+		//console.log(postData);
 		var options = {
 		  hostname: refConfig.jeedomURL,
-		  port: refConfig.jeedomPORT,
+		  port: refConfig.jeedoJeedommPORT,
 		  path: refConfig.jeedomAPIPath,
 		  method: 'POST',
 		  headers: {
@@ -55,7 +56,7 @@ module.exports = NodeHelper.create({
 	},
 
 	socketNotificationReceived: function(notification, payload) {
-	    if (notification === 'RELOAD') {
+	      if (notification === 'RELOAD') {
 		for (var c in payload.sensors) {
 				var sensor = payload.sensors[c];
 			}
