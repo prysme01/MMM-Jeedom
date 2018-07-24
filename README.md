@@ -1,12 +1,16 @@
 # Magic Mirror 2 - JEEDOM Module
 
 This module displays any JEEDOM command value. The information will be updated depending on the polling time.
+
 If a PIR-sensor using MMM-PIR-Sormor module is used, ths information will not be updated during screen off. 
+
 The infos will also not be updated when no instances of the MMM-Jeedom module are displayed on the screen (for example hidden by using MMM-Remote-Control or any carousel like MMM-Pages). This will allow to reduce the number of request to Jeedom API. 
 As soon as one MMM-Jeedom module will be again displayed on the screen, all the instances will request an update of the datas. 
 
 ![alt text](https://raw.githubusercontent.com/prysme01/MMM-Jeedom/master/screenshots/MMM-Jeedom.png "Image of MMM-Jeedom")
+
 ![alt text](https://github.com/AgP42/MMM-Jeedom/blob/master/screenshots/MMM-Jeedom_1.png "Image of MMM-Jeedom_1")
+
 ![alt text](https://github.com/AgP42/MMM-Jeedom/blob/master/screenshots/MMM-Jeedom_2.png "Image of MMM-Jeedom_2")
 
 ## Module installation
@@ -188,7 +192,7 @@ The following properties can be configured:
 		</tr>
 		<tr>
 			<td><code>jeedomAPIKey</code></td>
-			<td>"Jeedom / paramétres / configuration / API / clés API and take the API key globale of Jeedom<br>
+			<td>"Jeedom / paramétres / configuration / API . Activate the "Accès API JSONRPC" and take the API key globale of Jeedom<br>
 			</td>
 		</tr>
 		<tr>
