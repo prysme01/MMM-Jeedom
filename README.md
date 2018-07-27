@@ -2,7 +2,7 @@
 
 This module displays any JEEDOM command value. The information will be updated depending on the polling time.
 
-If a PIR-sensor using MMM-PIR-Sormor module is used, ths information will not be updated during screen off. 
+If a PIR-sensor using MMM-PIR-Sensor module is used, this information will not be updated during screen off. 
 
 The infos will also not be updated when no instances of the MMM-Jeedom module are displayed on the screen (for example hidden by using MMM-Remote-Control or any carousel like MMM-Pages). This will allow to reduce the number of request to Jeedom API. 
 As soon as one MMM-Jeedom module will be again displayed on the screen, all the instances will request an update of the datas. 
