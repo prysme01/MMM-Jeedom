@@ -9,7 +9,7 @@ Module.register("MMM-Jeedom",{
 		updateInterval: 30000, //30s
 		initialLoadDelay: 0,
 		animationSpeed: 1000,
-		displayLastUpdate: true,
+		displayLastUpdate: false,
 		displayLastUpdateFormat: 'dd - HH:mm:ss',
 		result: {},
 		sensors: [
