@@ -52,7 +52,7 @@ Module.register("MMM-Jeedom",{
 		Log.log(this.sensors);
 
 		// first update on start
-		self.updateJeedom(); //premier update appelé par resume à l'affichage de la page, donc on peut virer celui la
+		self.updateJeedom(); 
 	},
 	
 	//Modif AgP42 - 11/07/2018	
