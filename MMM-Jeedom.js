@@ -21,6 +21,8 @@ Module.register("MMM-Jeedom",{
 				hiddenoff: false,
 				hideempty: false,
 				customTitle: "No sensor define in config",
+				customTitleOn: undefined,
+				customTitleOff: undefined,
 				sameLine1: false,
 				sameLine2: false,
 			},
@@ -46,7 +48,23 @@ Module.register("MMM-Jeedom",{
 		this.sensors = [];
 		for (var c in this.config.sensors) {
 			var sensor = this.config.sensors[c];
-			var newSensor = {idx:sensor.idx, symbol:sensor.symbol, symbolon:sensor.symbolon, symboloff:sensor.symboloff, hideempty:sensor.hideempty,hiddenon:sensor.hiddenon, hiddenoff:sensor.hiddenoff, sameLine1:sensor.sameLine1, sameLine2:sensor.sameLine2, customTitle:sensor.customTitle, status:"", sname:"",boolean:sensor.boolean,unit:sensor.unit};
+			var newSensor = {
+				idx: sensor.idx, 
+				symbol: sensor.symbol, 
+				symbolon: sensor.symbolon, 
+				symboloff: sensor.symboloff, 
+				hideempty: sensor.hideempty,
+				hiddenon: sensor.hiddenon, 
+				hiddenoff: sensor.hiddenoff, 
+				sameLine1: sensor.sameLine1, 
+				sameLine2: sensor.sameLine2, 
+				customTitle: sensor.customTitle, 
+				customTitleOn: sensor.customTitleOn, 
+				customTitleOff: sensor.customTitleOff, 
+				status: "", 
+				sname: "",
+				boolean: sensor.boolean,
+				unit: sensor.unit};
 			this.sensors.push(newSensor);
 		}
 		Log.log(this.sensors);
@@ -156,6 +174,10 @@ Module.register("MMM-Jeedom",{
 			titleTD.className = "title bright align-left";
 			titleTD.innerHTML = sensor.sname;
 			if(typeof sensor.customTitle !== 'undefined') titleTD.innerHTML = sensor.customTitle;
+			if(sensor.boolean) {
+				if(sensor.status==1 && typeof sensor.customTitleOn !== 'undefined') titleTD.innerHTML = sensor.customTitleOn;
+				if(sensor.status==0 && typeof sensor.customTitleOff !== 'undefined') titleTD.innerHTML = sensor.customTitleOff;
+			}
 			sensorWrapper.appendChild(titleTD);
 
 			//si c'est pas un boolean, on affiche la valeur (jeedom) et l'unité (config)
