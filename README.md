@@ -252,6 +252,8 @@ The following properties can be configured:
 					<li>customTitle: "No sensor define in config", : Title of this sensor</li>
 					<li>customTitleOn: undefined, : Title to display when equipement is ON if "boolean : true,". If customTitleOn is not set, customTitle is displayed</li>
 					<li>customTitleOff: undefined, : Title to display when equipement is OFF if "boolean : true,". If customTitleOff is not set, customTitle is displayed</li></li>
+					<li>statuson: undefined, : Status to display when equipement is ON if "boolean : true,". If statuson is not set, status from Jeedom sensor is displayed</li>
+					<li>statusoff: undefined, : Status to display when equipement is OFF if "boolean : true,". If statusoff is not set, status from Jeedom is displayed</li></li>
 					<li>unit : "%", : unit to display after the value of the sensor</li>
 					<li>sameLine1: false, : if true, it will be display on the same line than the "sameLine2: true". Only the value and the unit can be defined in that case. See example above</li>
 					<li>sameLine2: false, : if true, it will be display on the same line than the "sameLine1: true". The title and symbol define here will be used for both infos. See example above</li>

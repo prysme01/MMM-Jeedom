@@ -23,6 +23,8 @@ Module.register("MMM-Jeedom",{
 				customTitle: "No sensor define in config",
 				customTitleOn: undefined,
 				customTitleOff: undefined,
+				statuson: undefined,
+				statusoff: undefined,
 				sameLine1: false,
 				sameLine2: false,
 			},
@@ -62,6 +64,8 @@ Module.register("MMM-Jeedom",{
 				customTitleOn: sensor.customTitleOn, 
 				customTitleOff: sensor.customTitleOff, 
 				status: "", 
+				statuson: sensor.statuson, 
+				statusoff: sensor.statusoff, 
 				sname: "",
 				boolean: sensor.boolean,
 				unit: sensor.unit};
@@ -181,21 +185,27 @@ Module.register("MMM-Jeedom",{
 			sensorWrapper.appendChild(titleTD);
 
 			//si c'est pas un boolean, on affiche la valeur (jeedom) et l'unité (config)
-			if (!sensor.boolean) {
-				var statusTD = document.createElement('td');
-				statusTD.className = "time light align-right";
-				
-				//si c'est un "sameLine2", on affiche celui mémorisé précédemment avant de continuer
-				if(sensor.sameLine2) {
-					statusTD.innerHTML = statusTD.innerHTML + sameLineValueMemorisation + " " 
-					+ sameLineUnitMemorisation + " - ";
-					
-				}			
-					
+			var statusTD = document.createElement('td');
+			statusTD.className = "time light align-right";
+			//si c'est un "sameLine2", on affiche celui mémorisé précédemment avant de continuer
+			if(sensor.sameLine2) {
+				statusTD.innerHTML = statusTD.innerHTML + sameLineValueMemorisation + " " 
+				+ sameLineUnitMemorisation + " - ";			
+			}
+			
+			if (!sensor.boolean) {					
 				statusTD.innerHTML = statusTD.innerHTML + sensor.status;
 				if(typeof sensor.unit !== 'undefined') {
 					statusTD.innerHTML = statusTD.innerHTML + " " + sensor.unit;
 				}
+				sensorWrapper.appendChild(statusTD);
+
+			} else if (sensor.status==1 && typeof sensor.statuson !== 'undefined') {
+				statusTD.innerHTML = statusTD.innerHTML + sensor.statuson;
+				sensorWrapper.appendChild(statusTD);
+
+			} else if (sensor.status==0 && typeof sensor.statusoff !== 'undefined') {
+				statusTD.innerHTML = statusTD.innerHTML + sensor.statusoff;
 				sensorWrapper.appendChild(statusTD);
 			}
 
