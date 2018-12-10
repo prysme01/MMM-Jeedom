@@ -21,6 +21,10 @@ Module.register("MMM-Jeedom",{
 				hiddenoff: false,
 				hideempty: false,
 				customTitle: "No sensor define in config",
+				customTitleOn: undefined,
+				customTitleOff: undefined,
+				statuson: undefined,
+				statusoff: undefined,
 				sameLine1: false,
 				sameLine2: false,
 			},
@@ -46,7 +50,25 @@ Module.register("MMM-Jeedom",{
 		this.sensors = [];
 		for (var c in this.config.sensors) {
 			var sensor = this.config.sensors[c];
-			var newSensor = {idx:sensor.idx, symbol:sensor.symbol, symbolon:sensor.symbolon, symboloff:sensor.symboloff, hideempty:sensor.hideempty,hiddenon:sensor.hiddenon, hiddenoff:sensor.hiddenoff, sameLine1:sensor.sameLine1, sameLine2:sensor.sameLine2, customTitle:sensor.customTitle, status:"", sname:"",boolean:sensor.boolean,unit:sensor.unit};
+			var newSensor = {
+				idx: sensor.idx, 
+				symbol: sensor.symbol, 
+				symbolon: sensor.symbolon, 
+				symboloff: sensor.symboloff, 
+				hideempty: sensor.hideempty,
+				hiddenon: sensor.hiddenon, 
+				hiddenoff: sensor.hiddenoff, 
+				sameLine1: sensor.sameLine1, 
+				sameLine2: sensor.sameLine2, 
+				customTitle: sensor.customTitle, 
+				customTitleOn: sensor.customTitleOn, 
+				customTitleOff: sensor.customTitleOff, 
+				status: "", 
+				statuson: sensor.statuson, 
+				statusoff: sensor.statusoff, 
+				sname: "",
+				boolean: sensor.boolean,
+				unit: sensor.unit};
 			this.sensors.push(newSensor);
 		}
 		Log.log(this.sensors);
@@ -156,24 +178,34 @@ Module.register("MMM-Jeedom",{
 			titleTD.className = "title bright align-left";
 			titleTD.innerHTML = sensor.sname;
 			if(typeof sensor.customTitle !== 'undefined') titleTD.innerHTML = sensor.customTitle;
+			if(sensor.boolean) {
+				if(sensor.status==1 && typeof sensor.customTitleOn !== 'undefined') titleTD.innerHTML = sensor.customTitleOn;
+				if(sensor.status==0 && typeof sensor.customTitleOff !== 'undefined') titleTD.innerHTML = sensor.customTitleOff;
+			}
 			sensorWrapper.appendChild(titleTD);
 
 			//si c'est pas un boolean, on affiche la valeur (jeedom) et l'unité (config)
-			if (!sensor.boolean) {
-				var statusTD = document.createElement('td');
-				statusTD.className = "time light align-right";
-				
-				//si c'est un "sameLine2", on affiche celui mémorisé précédemment avant de continuer
-				if(sensor.sameLine2) {
-					statusTD.innerHTML = statusTD.innerHTML + sameLineValueMemorisation + " " 
-					+ sameLineUnitMemorisation + " - ";
-					
-				}			
-					
+			var statusTD = document.createElement('td');
+			statusTD.className = "time light align-right";
+			//si c'est un "sameLine2", on affiche celui mémorisé précédemment avant de continuer
+			if(sensor.sameLine2) {
+				statusTD.innerHTML = statusTD.innerHTML + sameLineValueMemorisation + " " 
+				+ sameLineUnitMemorisation + " - ";			
+			}
+			
+			if (!sensor.boolean) {					
 				statusTD.innerHTML = statusTD.innerHTML + sensor.status;
 				if(typeof sensor.unit !== 'undefined') {
 					statusTD.innerHTML = statusTD.innerHTML + " " + sensor.unit;
 				}
+				sensorWrapper.appendChild(statusTD);
+
+			} else if (sensor.status==1 && typeof sensor.statuson !== 'undefined') {
+				statusTD.innerHTML = statusTD.innerHTML + sensor.statuson;
+				sensorWrapper.appendChild(statusTD);
+
+			} else if (sensor.status==0 && typeof sensor.statusoff !== 'undefined') {
+				statusTD.innerHTML = statusTD.innerHTML + sensor.statusoff;
 				sensorWrapper.appendChild(statusTD);
 			}
 

@@ -167,7 +167,9 @@ Or (3rd example of the screenshot) :
 * you can define all the sensors you want
 * you can add several time the module in your Magic Mirror config and define a different updateInterval
 * symbol is based on [Fontawesome](http://fontawesome.io/icons/)
-* if you define the sensor as a "boolean:true" then you can add symbolon and symboloff depending on the sensor value (0 or 1)
+* if you define the sensor as a "boolean:true" then you can :
+	- add symbolon and symboloff depending on the sensor value (0 or 1)
+	- add customTitleOn and customTitleOff depending on the sensor value (0 or 1)
 
 ## Configuration Options
 
@@ -248,6 +250,10 @@ The following properties can be configured:
 					<li>hiddenoff: false, : info to hide if value is Off</li>
 					<li>hideempty: false, : info to hide if value is Empty</li>
 					<li>customTitle: "No sensor define in config", : Title of this sensor</li>
+					<li>customTitleOn: undefined, : Title to display when equipement is ON if "boolean : true,". If customTitleOn is not set, customTitle is displayed</li>
+					<li>customTitleOff: undefined, : Title to display when equipement is OFF if "boolean : true,". If customTitleOff is not set, customTitle is displayed</li></li>
+					<li>statuson: undefined, : Status to display when equipement is ON if "boolean : true,". If statuson is not set, status from Jeedom sensor is displayed</li>
+					<li>statusoff: undefined, : Status to display when equipement is OFF if "boolean : true,". If statusoff is not set, status from Jeedom is displayed</li></li>
 					<li>unit : "%", : unit to display after the value of the sensor</li>
 					<li>sameLine1: false, : if true, it will be display on the same line than the "sameLine2: true". Only the value and the unit can be defined in that case. See example above</li>
 					<li>sameLine2: false, : if true, it will be display on the same line than the "sameLine1: true". The title and symbol define here will be used for both infos. See example above</li>
