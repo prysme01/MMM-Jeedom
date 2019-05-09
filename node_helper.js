@@ -25,7 +25,7 @@ module.exports = NodeHelper.create({
 		//console.log(postData);
 		var options = {
 		  hostname: refConfig.jeedomURL,
-		  port: refConfig.jeedoJeedommPORT,
+		  port: refConfig.jeedomPORT,
 		  path: refConfig.jeedomAPIPath,
 		  method: 'POST',
 		  headers: {
