@@ -35,11 +35,15 @@ module.exports = NodeHelper.create({
 		};
 
 		var protocol = refConfig.jeedomHTTPS ? https : http;
-
 		var req = protocol.request(options, (res) => {
 		  res.setEncoding('utf8');
 		  res.on('data', (chunk) => {
-		    self.sendSocketNotification("RELOAD_DONE",JSON.parse(chunk));
+			try{
+				self.sendSocketNotification("RELOAD_DONE",JSON.parse(chunk));
+			}
+			catch (e) {
+				console.log(`Jeedom parsing :`, e.message)
+			}
 		  });
 		  res.on('end', () => {
 			
@@ -56,11 +60,11 @@ module.exports = NodeHelper.create({
 	},
 
 	socketNotificationReceived: function(notification, payload) {
-	      if (notification === 'RELOAD') {
-		for (var c in payload.sensors) {
-				var sensor = payload.sensors[c];
+	    if (notification === 'RELOAD') {
+			for (var c in payload.sensors) {
+					var sensor = payload.sensors[c];
 			}
-	      this.reload(payload);
+	      	this.reload(payload);
 	    }
 	}
 });

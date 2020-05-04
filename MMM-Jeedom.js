@@ -40,10 +40,10 @@ Module.register("MMM-Jeedom",{
 		this.title = "Loading...";
 		this.loaded = false;
 		var self = this; 
-		
-		var ModuleJeedomHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre pour le cacher)
-		var IntervalID = 0; // à déclarer pour chaque instance pour pouvoir couper la mise à jour pour chacune
-		var lastUpdate = 0;
+		this.debug = false;
+		this.ModuleJeedomHidden = false; // par défaut on affiche le module (si pas de module carousel ou autre pour le cacher)
+		this.IntervalID = 0; // à déclarer pour chaque instance pour pouvoir couper la mise à jour pour chacune
+		this.lastUpdate = 0;
 		
 		this.IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
 		
@@ -81,28 +81,37 @@ Module.register("MMM-Jeedom",{
 
 	suspend: function() { //fct core appelée quand le module est caché
 		this.ModuleJeedomHidden = true; //Il aurait été plus propre d'utiliser this.hidden, mais comportement aléatoire...
-	//	Log.log("Fct suspend - ModuleHidden = " + this.ModuleJeedomHidden);
+		this.debugger("Fct suspend - ModuleHidden = " + this.ModuleJeedomHidden);
 		this.GestionUpdateInterval(); //on appele la fonction qui gere tous les cas
 	},
 	
 	resume: function() { //fct core appelée quand le module est affiché
 		this.ModuleJeedomHidden = false;
-	//	Log.log("Fct resume - ModuleHidden = " + this.ModuleJeedomHidden);
+		this.debugger("Fct resume - ModuleHidden = " + this.ModuleJeedomHidden);
 		this.GestionUpdateInterval();	
 	},
 
-	notificationReceived: function(notification, payload) {
+	debugger:function (message) {
+		if(this.debug === true)
+		{
+			Log.log("[Jeedom] "+message);
+		}
+	},
+
+	notificationReceived: function(notification, payload, sender) {
+		this.debugger("Fct notif notif !!! " + notification);
 		if (notification === "USER_PRESENCE") { // notification envoyée par le module MMM-PIR-Sensor. Voir sa doc
-		//	Log.log("Fct notificationReceived USER_PRESENCE - payload = " + payload);
+			this.debugger("Fct notificationReceived USER_PRESENCE - payload = " + payload);
 			UserPresence = payload;
 			this.GestionUpdateInterval();
 		}
 	},
 
 	GestionUpdateInterval: function() {
+		this.debugger("Call GestionUpdateInterval : " + UserPresence + " / "+this.ModuleJeedomHidden);
 		if (UserPresence === true && this.ModuleJeedomHidden === false){ // on s'assure d'avoir un utilisateur présent devant l'écran (sensor PIR) et que le module soit bien affiché
 			var self = this;
-		//	Log.log(this.name + " est revenu et user present ! On update");
+			this.debugger(this.name + " est revenu et user present ! On update");
 	
 			// update tout de suite
 			self.updateJeedom();
@@ -111,7 +120,7 @@ Module.register("MMM-Jeedom",{
 				this.IntervalID = setInterval(function() { self.updateJeedom(); }, this.config.updateInterval);
 			}
 		}else{ //sinon (UserPresence = false OU ModuleHidden = true)
-		//	Log.log("Personne regarde : on stop l'update ! ID : " + this.IntervalID);
+			this.debugger("Personne regarde : on stop l'update ! ID : " + this.IntervalID);
 			clearInterval(this.IntervalID); // on arrete l'intervalle d'update en cours
 			this.IntervalID=0; //on reset la variable
 		}
@@ -227,10 +236,10 @@ Module.register("MMM-Jeedom",{
 	},
 	updateJeedom: function() {
 		this.sendSocketNotification('RELOAD',this.config);
-		
+		this.debugger("Jeedom RELOAD "+ Date.now() / 1000);
 		if(this.config.displayLastUpdate){
 			this.lastUpdate = Date.now() / 1000 ; //memorise la date de la demande d'update pour chaque instance			
-		//	Log.log("Update Jeedom demandée pour " + this.config.sensors[0].idx + " - à : " + moment.unix(this.lastUpdate).format('dd - HH:mm:ss'));
+		    this.debugger("Update Jeedom demandée pour " + this.config.sensors[0].idx + " - à : " + moment.unix(this.lastUpdate).format('dd - HH:mm:ss'));
 		}
 	//	this.sendNotification("SHOW_ALERT",{type:"notification",message:"Update Jeedom demandée"});
 	},
