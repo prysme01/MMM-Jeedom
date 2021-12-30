@@ -276,23 +276,23 @@ Module.register("MMM-Jeedom",{
 		//console.log (`API : ${this.config.Virtual_API} , TempID : ${this.config.TempID}, HumID: ${this.config.HumID}`)
 		if (notification === "INDOOR_TEMPERATURE") {	
 			if (this.config.Virtual_API != '') {				
-				console.log (`API : ${this.config.Virtual_API} `)
+				this.debugger(`API : ${this.config.Virtual_API} `)
 					if (this.config.TempID != ''){
 					this.indoorTemperature = this.roundValue(payload);
-					console.log(`la temperaure remonté est ${this.indoorTemperature}`);
-					console.log(`l'adresse de jeedom est ${this.config.jeedomURL}`);
+					this.debugger(`la temperaure remonté est ${this.indoorTemperature}`);
+					this.debugger(`l'adresse de jeedom est ${this.config.jeedomURL}`);
 					this.updatejeedom(this.config.TempID,this.indoorTemperature);
-					console.log(`${this.name} renvoie la temp ${this.indoorTemperature}`)
+					this.debugger(`${this.name} renvoie la temp ${this.indoorTemperature}`)
 				}
 			}
 		}
 		if (notification === "INDOOR_HUMIDITY") {
 			if (this.config.Virtual_API != '') {
 				if (this.config.HumdID != '') {
-					console.log (` HumID: ${this.config.HumID}`)
+					this.debugger (` HumID: ${this.config.HumID}`)
 					this.indoorHumidity = this.roundValue(payload);
 					this.updatejeedom(this.config.HumID, this.indoorHumidity);
-					console.log(`${this.name} renvoie l humidite :  ${this.indoorHumidity}`);
+					this.debugger(`${this.name} renvoie l humidite :  ${this.indoorHumidity}`);
 					}
 			}
 		 }
@@ -312,11 +312,11 @@ Module.register("MMM-Jeedom",{
 			  } else {
 				var jeedomprot = this.config.jeedomHTTPS ? "https" : "http";
 				url = jeedomprot + "://" + this.config.jeedomURL + this.config.jeedomAPIPath +"?apikey=" + this.config.Virtual_API + "&type=virtual&type=virtual&id=" + ID + "&value=" + Values
-				console.log(`ToJeedom >> ${url}`)
+				this.debugger(`ToJeedom >> ${url}`)
 				var xmlHttp = new XMLHttpRequest();
 				xmlHttp.open( "GET", url, false ); // false for synchronous request
 				xmlHttp.send( null );
-				console.log( `ToJeedom >> Status : ${xmlHttp.status}-${xmlHttp.statusText} Reponse : ${xmlHttp.responseText}` );       
+				this.debugger( `ToJeedom >> Status : ${xmlHttp.status}-${xmlHttp.statusText} Reponse : ${xmlHttp.responseText}` );       
 				}
 			},
 });
