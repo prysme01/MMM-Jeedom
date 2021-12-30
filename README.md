@@ -64,7 +64,10 @@ modules: [
 					hideempty:false,
 
 				},
-			]
+			],
+			Virtual_API: "", // Code APi de vos virtuals
+			TempID: "5089", // ID pour l'info température
+			HumID: "5088", // ID pour l'info d'humidité
 			}
 		},
 ]
@@ -162,6 +165,7 @@ Or (3rd example of the screenshot) :
 					unit : "°C",
       				},
 		]
+		
 ````
 * HTTPS and HTTP is supported
 * you can define all the sensors you want
@@ -258,6 +262,23 @@ The following properties can be configured:
 					<li>sameLine1: false, : if true, it will be display on the same line than the "sameLine2: true". Only the value and the unit can be defined in that case. See example above</li>
 					<li>sameLine2: false, : if true, it will be display on the same line than the "sameLine1: true". The title and symbol define here will be used for both infos. See example above</li>
 				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td><code>Virtual_API</code></td>
+			<td>This is the API key for update Virtual, you should find it on menu Params / System / API<br>					
+			</td>
+		</tr>
+		<tr>
+			<td><code>TempID</code></td>
+			<td>This is the command ID for virtual temperature information send to jeedom<br>
+				<br><b>Possible values:</b> <code>XXXX</code>				
+			</td>
+		</tr>
+		<tr>
+			<td><code>HumID</code></td>
+			<td>This is the command ID for virtual Humidity information send to jeedom<br>
+				<br><b>Possible values:</b> <code>XXXX</code>
 			</td>
 		</tr>
 	</tbody>
