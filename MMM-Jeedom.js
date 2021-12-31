@@ -29,6 +29,12 @@ Module.register("MMM-Jeedom",{
 				sameLine2: false,
 			},
 		],
+		
+			Virtual_API: "", // Code APi de vos virtual
+			TempID: "", // ID pour la température
+			HumID: "", // ID pour l'humidité
+			
+		
 		jeedomHTTPS: true
 	},
 
@@ -245,6 +251,7 @@ Module.register("MMM-Jeedom",{
 	},
 
 	socketNotificationReceived: function(notification, payload) {
+		//console.log(`notification : ${notification} ; payload : ${payload}`)
 		if (notification === "RELOAD_DONE") {
 			this.result = payload;
 			//Log.log(payload);
@@ -263,7 +270,53 @@ Module.register("MMM-Jeedom",{
 			}
 			this.loaded = true;
 			this.updateDom(this.animationSpeed);
-		} 
-	}
+		}
+	},
+	notificationReceived: function(notification, payload, sender) {
+		//console.log (`API : ${this.config.Virtual_API} , TempID : ${this.config.TempID}, HumID: ${this.config.HumID}`)
+		if (notification === "INDOOR_TEMPERATURE") {	
+			if (this.config.Virtual_API != '') {				
+				this.debugger(`API : ${this.config.Virtual_API} `)
+					if (this.config.TempID != ''){
+					this.indoorTemperature = this.roundValue(payload);
+					this.debugger(`la temperaure remonté est ${this.indoorTemperature}`);
+					this.debugger(`l'adresse de jeedom est ${this.config.jeedomURL}`);
+					this.updatejeedom(this.config.TempID,this.indoorTemperature);
+					this.debugger(`${this.name} renvoie la temp ${this.indoorTemperature}`)
+				}
+			}
+		}
+		if (notification === "INDOOR_HUMIDITY") {
+			if (this.config.Virtual_API != '') {
+				if (this.config.HumdID != '') {
+					this.debugger (` HumID: ${this.config.HumID}`)
+					this.indoorHumidity = this.roundValue(payload);
+					this.updatejeedom(this.config.HumID, this.indoorHumidity);
+					this.debugger(`${this.name} renvoie l humidite :  ${this.indoorHumidity}`);
+					}
+			}
+		 }
+	},
 
+	roundValue: function(temperature){
+		const decimals = this.config.roundTemp ? 0 : 1;
+		const roundValue = parseFloat(temperature).toFixed(decimals);
+		return roundValue === "-0" ? 0 : roundValue;
+	  },
+  
+	updatejeedom: function(ID,Values){
+		var self = this;
+		var url = '';
+		 if (this.ID == '')  {
+			  console.log('Pas d ID de valeur Jeedom')
+			  } else {
+				var jeedomprot = this.config.jeedomHTTPS ? "https" : "http";
+				url = jeedomprot + "://" + this.config.jeedomURL + this.config.jeedomAPIPath +"?apikey=" + this.config.Virtual_API + "&type=virtual&type=virtual&id=" + ID + "&value=" + Values
+				this.debugger(`ToJeedom >> ${url}`)
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.open( "GET", url, false ); // false for synchronous request
+				xmlHttp.send( null );
+				this.debugger( `ToJeedom >> Status : ${xmlHttp.status}-${xmlHttp.statusText} Reponse : ${xmlHttp.responseText}` );       
+				}
+			},
 });
