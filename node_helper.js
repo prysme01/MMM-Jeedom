@@ -19,7 +19,8 @@ module.exports = NodeHelper.create({
 			}
 			i++;
 		}
-		var postData = '{"jsonrpc": "2.0", "id": "1000", "method": "cmd::execCmd", "params": {"apikey": "';
+		//var postData = '{"jsonrpc": "2.0", "id": "1000", "method": "cmd::execCmd", "params": {"apikey": "';
+		var postData = '{"jsonrpc": "2.0", "id": "1000", "method": "cmd::execCmd", "params": {"options":"", "apikey": "';
 		postData = postData + refConfig.jeedomAPIKey + '", "id": ' + ids + ']}}';
 		//modif AGP
 		console.log(postData);
