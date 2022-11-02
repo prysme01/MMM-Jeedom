@@ -155,6 +155,8 @@ Module.register("MMM-Jeedom", {
 		for (var c in this.sensors) {
 			var sensor = this.sensors[c];
 
+			if (sensor.boolean && sensor.status > 1) sensor.status = 1;
+
 			if ((sensor.status == 0 && sensor.hideempty)) continue; //si on voulait cacher les vide et qu'il est vide, on fait rien...
 			if ((sensor.status == "On" && sensor.hiddenon) || (sensor.status == "Off" && sensor.hiddenoff)) continue; //si on voulait cacher les On et qu'il est On, on fait rien...
 
